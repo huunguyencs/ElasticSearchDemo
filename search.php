@@ -1,4 +1,23 @@
 <?php
+    use Elasticsearch\ClientBuilder;
+    /**
+     * Connect to ElasticSearch server
+     * Create/delete index: product
+     */
+
+    require "./vendor/autoload.php";
+
+    $hosts = [
+        [
+            'host' => '127.0.0.1',
+            'port' => '9200',
+            'scheme' => 'http'
+        ]
+    ];
+
+    $client = ClientBuilder::create()->setHosts($hosts)->build();
+
+    $exists = $client->indices()->exists(['index' => 'product']);
 
 ?>
 
@@ -111,12 +130,12 @@
         </div>
     </div>
 
-    <script src="./js/jquery.min.js"></script>
+    <!-- <script src="./js/jquery.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js"></script>
 
     <script src="./js/jquery.easing.min.js"></script>
 
-    <script src="./js/sb-admin-2.min.js"></script>
+    <script src="./js/sb-admin-2.min.js"></script> -->
     
 </body>
 </html>

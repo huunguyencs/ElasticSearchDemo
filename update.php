@@ -1,4 +1,23 @@
 <?php
+    use Elasticsearch\ClientBuilder;
+    /**
+     * Connect to ElasticSearch server
+     * Create/delete index: product
+     */
+
+    require "./vendor/autoload.php";
+
+    $hosts = [
+        [
+            'host' => '127.0.0.1',
+            'port' => '9200',
+            'scheme' => 'http'
+        ]
+    ];
+
+    $client = ClientBuilder::create()->setHosts($hosts)->build();
+
+    $exists = $client->indices()->exists(['index' => 'product']);
 
 ?>
 
@@ -35,13 +54,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="search.php">
+                <a class="nav-link" href="delete.php">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                     <span>Delete</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="delete.php">
+                <a class="nav-link" href="search.php">
                     <i class="fa fa-filter" aria-hidden="true"></i>
                     <span>Filter product</span>
                 </a>
@@ -82,8 +101,6 @@
                                         <div class="card-header">
                                             <h3 class="card-title">Update Document</h3>
                                         </div>
-                                    <!-- /.card-header -->
-                                    <!-- form start -->
                                         <form role="form" id="quickForm">
                                             <div class="card-body">
                                                 <div class="form-group">
@@ -121,12 +138,12 @@
         </div>
     </div>
 
-    <script src="./js/jquery.min.js"></script>
+    <!-- <script src="./js/jquery.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js"></script>
 
     <script src="./js/jquery.easing.min.js"></script>
 
-    <script src="./js/sb-admin-2.min.js"></script>
+    <script src="./js/sb-admin-2.min.js"></script> -->
     
 </body>
 </html>
