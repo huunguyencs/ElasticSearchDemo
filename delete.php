@@ -92,11 +92,11 @@
                         <i class="fa fa-bars" aria-hidden="true"></i>
                     </button>
 
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="post" action="search.php">
                         <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" name="search" id="search">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
+                            <button class="btn btn-primary" type="submit">
                                 <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -110,10 +110,9 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <!-- jquery validation -->
                                     <div class="card card-primary">
                                         <div class="card-header">
-                                            <h3 class="card-title">Delete Document</h3>
+                                            <h3 class="card-title">Delete document</h3>
                                         </div>
                                         <form role="form" id="quickForm" action="#" method="post">
                                             <div class="card-body">
@@ -122,7 +121,6 @@
                                                     <input type="text" name="id" class="form-control" id="id" placeholder="Enter id">
                                                 </div>
                                             </div>
-                                            <!-- /.card-body -->
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-danger">Delete</button>
                                             </div>

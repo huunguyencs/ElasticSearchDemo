@@ -19,6 +19,37 @@
 
     $exists = $client->indices()->exists(['index' => 'product']);
 
+    $search = $_POST['search'] ?? null;
+
+    if ($search != null) {
+        $params = [
+            'index' => 'product',
+            'type' => 'product_type',
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'should'=> [
+                            ['match' =>['name' => $search]],
+                            ['match' => ['tags' => $search]]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $items = null;
+        $total = 0;
+        try {
+            $results = $client->search($params);
+            $total = $results['hits']['total']['value'];
+        } catch (\Throwable $th) {
+            $results = null;
+        }
+        if ($total > 0) {
+            $items = $results['hits']['hits'];
+        }
+
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -85,23 +116,17 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <!-- jquery validation -->
                                     <div class="card card-primary">
                                         <div class="card-header">
                                             <h3 class="card-title">Search</h3>
                                         </div>
-                                        <form role="form" id="quickForm">
+                                        <form role="form" id="quickForm" action="#" method="post">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="value1">Value 1</label>
-                                                    <input type="text" name="value1" class="form-control" id="value1" placeholder="Enter value 1">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="value2">Value 2</label>
-                                                    <input type="text" name="value2" class="form-control" id="value2" placeholder="Enter value 2">
+                                                    <label for="search">Search</label>
+                                                    <input type="text" name="search" class="form-control" id="search" placeholder="Search for ..." value="<?=$search?>">
                                                 </div>
                                             </div>
-                                            <!-- /.card-body -->
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary">Search</button>
                                             </div>
@@ -109,6 +134,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <?php if($items != null): ?>
+                            <div class="row">
+                                <?php foreach($items as $item): ?>
+                                <div class="col-md-12">
+                                    <div class="card card-primary">
+                                        <div class="card-body">
+                                            <?php
+                                                $name = $item['_source']['name'];
+                                                $price = $item['_source']['price'];
+                                                $tags = implode(',',$item['_source']['tags']);
+                                            ?>
+                                            <div><?=$name?></div>
+                                            <div><?=$price?></div>
+                                            <div><?=$tags?></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php endforeach ?>
+                            </div>
+                            <?php endif ?>
                         </div>
                     </section>
                 </div>
