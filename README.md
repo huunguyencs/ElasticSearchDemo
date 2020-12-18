@@ -26,7 +26,7 @@ sudo apt-get install php-curl
 # First, run elastic search server (default on port 9200)
 cd elasticsearch-7.10.1/
 ./bin/elasticsearch
-# Then, run php server
+# Then, go to project directory and start php server
 php -S localhost:port
 ```
 where port is your php server port (such as 8888).
