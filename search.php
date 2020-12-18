@@ -39,6 +39,12 @@
                     <span>Delete</span>
                 </a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="search.php">
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                    <span>Filter product</span>
+                </a>
+            </li>
         </ul>
 
         <div id="content-wrapper" class="d-flex flex-column">

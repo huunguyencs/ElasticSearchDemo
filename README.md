@@ -1,12 +1,10 @@
 # ElasticSearch Demo
 
-## Quick start
+## Installation (on linux)
 
-### Installation
+### Elastic search
 
-1. Elastic search
-
-- Install on linux
+- Install
 
 ```bash
 wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.1-linux-x86_64.tar.gz
@@ -20,43 +18,44 @@ cd elasticsearch-7.10.1/
 ./bin/elasticsearch
 ```
 
-2. Install php 7.4
+### Install php 7.4 and php-curl
 
 ```bash
 sudo apt install php7.4-cli
+sudo apt-get install php-curl
 ```
 
-### Run
+## Quick start
 
 ```bash
 php -S localhost:port
 ```
-where port is your php server port
+where port is your php server port (such as 8888).
 
-#### Example
+### Example
 
 ```bash
 php -S localhost:8888
 ```
 
-Then open your browser and go to `localhost:port` such as `localhost:8888`
+Then open your browser and go to `localhost:port` (such as `localhost:8888`).
 
-#### Create index
-
-...
-
-#### Update (or create) document of index
+### Create index
 
 ...
 
-#### Search
+### Update (or create) document of index
 
 ...
 
-#### Delete document
+### Search
 
 ...
 
-#### Delete index
+### Delete document
+
+...
+
+### Delete index
 
 ...

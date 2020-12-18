@@ -35,9 +35,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="delete.php">
+                <a class="nav-link" href="search.php">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                     <span>Delete</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="delete.php">
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                    <span>Filter product</span>
                 </a>
             </li>
         </ul>

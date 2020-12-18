@@ -1,4 +1,40 @@
 <?php
+    use Elasticsearch\ClientBuilder;
+    /**
+     * Ket noi ElasticSearch server
+     * Tao/ xoa index: product
+     */
+
+    require "./vendor/autoload.php";
+
+    $hosts = [
+        [
+            'host' => '127.0.0.1',
+            'port' => '9200',
+            'scheme' => 'http'
+        ]
+    ];
+
+    $client = ClientBuilder::create()->setHosts($hosts)->build();
+
+    $exists = $client->indices()->exists(['index' => 'product']);
+
+
+    $action =$_GET['action'] ?? '';
+
+    if ($action == 'create') {
+        // Create new index
+        if (!$exists)
+            $client->indices()->create(['index' => 'product']);
+            $exists = TRUE;
+    }
+    else if ($action == 'delete') {
+        if ($exists)
+            $client->indices()->delete(['index' => 'product']);
+            $exists = FALSE;
+    }
+
+    $msg = $exists ? "Index product is existing" : "Index product is not existing"
 
 ?>
 
@@ -39,6 +75,12 @@
                     <span>Delete</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="search.php">
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                    <span>Filter product</span>
+                </a>
+            </li>
         </ul>
 
         <div id="content-wrapper" class="d-flex flex-column">
@@ -63,7 +105,19 @@
                     </form>
 
                 </nav>
-                
+                <div class="card m-4">
+                    <div class="card-header text-danger display-4">Index manager</div>
+                    <div class="card-body">
+                        <?php if (!$exists): ?>
+                            <a class="btn btn-success" href="http://localhost:8888?action=create">Create index</a>
+                        <?php else: ?>
+                            <a class="btn btn-danger" href="http://localhost:8888?action=delete">Delete index</a>
+                        <?php endif; ?>
+                        <div class="alert alert-primary mt-5">
+                        <?=$msg?>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
