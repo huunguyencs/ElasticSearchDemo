@@ -76,16 +76,6 @@
                         <i class="fa fa-bars" aria-hidden="true"></i>
                     </button>
 
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        </div>
-                    </form>
 
 
                 </nav>
@@ -94,24 +84,31 @@
                     <section class="content">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-md-12">
+                                    <!-- jquery validation -->
                                     <div class="card card-primary">
                                         <div class="card-header">
-                                            <h3 class="card-title">Home</h3>
+                                            <h3 class="card-title">Search</h3>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                
-
-
-
-
-
+                                        <form role="form" id="quickForm">
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="value1">Value 1</label>
+                                                    <input type="text" name="value1" class="form-control" id="value1" placeholder="Enter value 1">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="value2">Value 2</label>
+                                                    <input type="text" name="value2" class="form-control" id="value2" placeholder="Enter value 2">
+                                                </div>
                                             </div>
-                                        </div>
+                                            <!-- /.card-body -->
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary">Search</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            </div>    
+                            </div>
                         </div>
                     </section>
                 </div>

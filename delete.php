@@ -19,6 +19,22 @@
 
     $exists = $client->indices()->exists(['index' => 'product']);
 
+    $id = $_POST['id'] ?? null;
+    $msg = "";
+
+    if ($id != null) {
+        $params  = [
+            'index' => 'product',
+            'id' => $id
+        ];
+        try {
+            $client->delete($params);
+            $msg = "Deleted document id = ".$id;
+        } catch (Exception $e) {
+            $msg = "Nothing deleted.";
+        };
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -99,23 +115,18 @@
                                         <div class="card-header">
                                             <h3 class="card-title">Delete Document</h3>
                                         </div>
-                                    <!-- /.card-header -->
-                                    <!-- form start -->
-                                        <form role="form" id="quickForm">
+                                        <form role="form" id="quickForm" action="#" method="post">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="value1">Value 1</label>
-                                                    <input type="text" name="value1" class="form-control" id="value1" placeholder="Enter value 1">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="value2">Value 2</label>
-                                                    <input type="text" name="value2" class="form-control" id="value2" placeholder="Enter value 2">
+                                                    <label for="id">Id</label>
+                                                    <input type="text" name="id" class="form-control" id="id" placeholder="Enter id">
                                                 </div>
                                             </div>
                                             <!-- /.card-body -->
                                             <div class="card-footer">
-                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
                                             </div>
+                                            <div class ="card-body text-danger"><i><?=$msg?></i></div>
                                         </form>
                                     </div>
                                 </div>

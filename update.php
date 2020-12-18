@@ -1,9 +1,5 @@
 <?php
     use Elasticsearch\ClientBuilder;
-    /**
-     * Connect to ElasticSearch server
-     * Create/delete index: product
-     */
 
     require "./vendor/autoload.php";
 
@@ -19,6 +15,47 @@
 
     $exists = $client->indices()->exists(['index' => 'product']);
 
+
+    /**
+     * Document Structer
+     * - name
+     * - price
+     * - tag
+     */
+
+    $id = $_POST['id'] ?? null;
+    $name = $_POST['name'] ?? null;
+    $price = $_POST['price'] ?? null;
+    $tags = $_POST['tags'] ?? null;
+
+    $msg = "";
+    $attr = "";
+
+    if ($id != null && $name != null && $price != null && $tags!=null){
+
+        $params = [
+            'index' => 'product',
+            'type' => 'product_type',
+            'id' => $id,
+
+            'body' => [
+                'name' => $name,
+                'price' => $price,
+                'tags' => explode(",",$tags)
+            ]
+        ];
+
+        try {
+            $client->index($params);
+            $msg = "Update successful. Id = " . $id;
+            $attr = "card-body text-success";
+            $id = $name = $price = $tags = null;
+        } catch (\Throwable $th) {
+            $msg = "Update fail.";
+            $attr = "card-body text-danger";
+        }
+        
+    }
 ?>
 
 
@@ -101,21 +138,29 @@
                                         <div class="card-header">
                                             <h3 class="card-title">Update Document</h3>
                                         </div>
-                                        <form role="form" id="quickForm">
+                                        <form role="form" id="quickForm" action="#" method="post">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="value1">Value 1</label>
-                                                    <input type="text" name="value1" class="form-control" id="value1" placeholder="Enter value 1">
+                                                    <label for="id">Id</label>
+                                                    <input type="text" name="id" class="form-control" id="id" placeholder="Enter id" value="<?=$id?>">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="value2">Value 2</label>
-                                                    <input type="text" name="value2" class="form-control" id="value2" placeholder="Enter value 2">
+                                                    <label for="name">Name</label>
+                                                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter name" value="<?=$name?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="price">Price</label>
+                                                    <input type="text" name="price" class="form-control" id="price" placeholder="Enter price" value="<?=$price?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="tags">Tags <i>(seperate by comma)</i></label>
+                                                    <input type="text" name="tags" class="form-control" id="tags" placeholder="Enter tags" value="<?=$tags?>">
                                                 </div>
                                             </div>
-                                            <!-- /.card-body -->
                                             <div class="card-footer">
-                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                <button type="submit" class="btn btn-primary">Update</button>
                                             </div>
+                                            <div class ="<?=$attr?>"><i><?=$msg?></i></div>
                                         </form>
                                     </div>
                                 </div>
