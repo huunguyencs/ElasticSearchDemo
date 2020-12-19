@@ -26,13 +26,17 @@
     $id = $_POST['id'] ?? null;
     $name = $_POST['name'] ?? null;
     $price = $_POST['price'] ?? null;
+    $image1 = $_POST['image1'] ?? null;
+    $image2 = $_POST['image2'] ?? null;
+    $des = $_POST['description'] ?? null;
     $tags = $_POST['tags'] ?? null;
 
     $msg = "";
     $attr = "";
 
     if ($id != null && $name != null && $price != null && $tags!=null){
-
+        $image1 = $image1 ?? "https://kangsblackbeltacademy.com/wp-content/uploads/2017/04/default-image-720x530.jpg";
+        $image2 = $image2 ?? "https://kangsblackbeltacademy.com/wp-content/uploads/2017/04/default-image-720x530.jpg";
         $params = [
             'index' => 'product',
             'type' => 'product_type',
@@ -41,6 +45,9 @@
             'body' => [
                 'name' => $name,
                 'price' => $price,
+                'image1' => $image1,
+                'image2' => $image2,
+                'des' => $des,
                 'tags' => explode(",",$tags)
             ]
         ];
@@ -49,7 +56,7 @@
             $client->index($params);
             $msg = "Update successful. Id = " . $id;
             $attr = "card-body text-success";
-            $id = $name = $price = $tags = null;
+            $id = $name = $price = $tags = $image1 = $image2 = null;
         } catch (\Throwable $th) {
             $msg = "Update fail.";
             $attr = "card-body text-danger";
@@ -142,19 +149,32 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label for="id">Id</label>
-                                                    <input type="text" name="id" class="form-control" id="id" placeholder="Enter id" value="<?=$id?>">
+                                                    <input type="text" name="id" class="form-control" id="id" placeholder="Enter id" value="<?=$id?>" require>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="name">Name</label>
-                                                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter name" value="<?=$name?>">
+                                                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter name" value="<?=$name?>" require>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="price">Price</label>
-                                                    <input type="text" name="price" class="form-control" id="price" placeholder="Enter price" value="<?=$price?>">
+                                                    <input type="text" name="price" class="form-control" id="price" placeholder="Enter price" value="<?=$price?>" require>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="image1">Image 1</label>
+                                                    <input type="url" name="image1" class="form-control" id="image1" placeholder="Enter image 1 url" value="<?=$image1?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="image2">Image 2</label>
+                                                    <input type="url" name="image2" class="form-control" id="image2" placeholder="Enter image 2 url" value="<?=$image2?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="description">Description</label>
+                                                    <textarea name="description" class="form-control" id="description" placeholder="Enter description" value="<?=$des?>"></textarea>
+                                                </div>
+
+                                                <div class="form-group">
                                                     <label for="tags">Tags <i>(seperate by comma)</i></label>
-                                                    <input type="text" name="tags" class="form-control" id="tags" placeholder="Enter tags" value="<?=$tags?>">
+                                                    <input type="text" name="tags" class="form-control" id="tags" placeholder="Enter tags" value="<?=$tags?>" require>
                                                 </div>
                                             </div>
                                             <div class="card-footer">

@@ -2,7 +2,7 @@
 
 ## Quick start
 
-### Installation (on linux)
+### Install environment (on linux)
 
 #### Elastic search
 
@@ -16,7 +16,9 @@ tar -xzf elasticsearch-7.10.1-linux-x86_64.tar.gz
 #### Install php 7.4 and php-curl
 
 ```bash
+# Install php 7.4
 sudo apt install php7.4-cli
+# Install php-curl for php
 sudo apt-get install php-curl
 ```
 
