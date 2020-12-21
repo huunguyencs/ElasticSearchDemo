@@ -2,7 +2,7 @@
 
 ## Quick start
 
-### Install environment (on linux)
+### Install environment (on Ubuntu 20.04)
 
 #### Elastic search
 
