@@ -2,7 +2,7 @@
 Elasticsearch Demo - Database Seminar - HCMUT (2020-2021)
 
 ## Install
-Install [elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) and [logstash](https://www.elastic.co/guide/en/logstash/current/installing-logstash.html)
+Install [elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) and [logstash](https://www.elastic.co/guide/en/logstash/current/installing-logstash.html) and [Nodejs](https://nodejs.org/en/download/package-manager/)
 
 Install nodejs package
 ```bash
