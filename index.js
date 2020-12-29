@@ -44,7 +44,7 @@ app.get('/index',(req,res)=>{
 });
 
 app.get('/premier',(req,res)=>{
-    res.render('search',{page: 'Premier League',img:'premier'});
+    res.render('search',{page: 'Premier league',img:'premier'});
 });
 
 app.get('/bundesliga',(req,res)=>{
@@ -66,9 +66,17 @@ app.get('/serie-a',(req,res)=>{
 app.post('/search',urlencodedParser,(req,res)=>{
     let page = req.body.page;
     let img = req.body.img;
+    let fromdate = req.body.fromdate;
+    console.log(fromdate);
     res.render('result',{page:page,img:img});
 });
 
+app.post('/statistic',urlencodedParser,(req,res)=>{
+    let page = req.body.page;
+    let team = req.body.team;
+    let img = req.body.img;
+    res.render('statistic',{page:page,team:team,img:img});
+})
 
 app.listen(port,()=>{
     console.log('Running at http://localhost:' + port);
@@ -76,5 +84,5 @@ app.listen(port,()=>{
 
 
 function search(index, param){
-    
+
 }

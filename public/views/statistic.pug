@@ -1,0 +1,33 @@
+extends layouts/_layout.pug
+
+block variables
+	- var activePage = img;
+	- var activeGroup = 'none';
+
+block title
+	title Search !{page}
+
+block content
+	.app-title
+		div
+			h1
+				img(src="resources/images/"+ img+".png", width="30px" class="mr-3")
+				|  !{page}
+			p Start a beautiful journey here
+
+	.row
+		.col-md-12
+			.tile
+				h2.tile-title Statistic !{page}
+				.tile-body
+					.table-responsive
+						h4 Team: !{team}
+						ul
+							li Sum point:
+							li Win:
+							li Draw:
+							li Loss:
+							li Sum of goals scored:
+							li Sum of goals conceded:
+							li Sum of yellow card:
+							li Sum of red card:

@@ -17,28 +17,163 @@ block content
 	.row
 		.col-md-12
 			.tile
-				h3.tile-title Cập nhật/ Thêm
+				h3.tile-title Search !{page}
 				.tile-body
 					form(action="/search" method="POST")
 						.form-group
-							label.control-label Hãng xe
-							input.form-control(type="text", placeholder="Nhập hãng xe, loại xe", name="Brand" value=value?value.Brand:"")
+							label.control-label Team
+							input.form-control(type="text", placeholder="Input team's name", name="team")
 
-						.form-group
-							label.control-label Biển số
-							input.form-control(type="text", placeholder="Nhập biển số", name="Number" value=value?value.Number:"")
-
-						.form-group
-							label.control-label Loại
-							input.form-control(type="number", placeholder="Nhập loại", name="Type" value=value?value.Type:"" max="2" min="1")
-							div Ghi chú
-								ul
-									li 1. Xe liên tỉnh
-									li 2. Xe nội thành
+						.form-group.row
+							.col-md-2
+								label.control-label From date
+								input.form-control(type="date" name="fromdate" min="2019-08-05" max="2020-08-05")
+							.col-md-2
+								label.control-label To date
+								input.form-control(type="date", name="todate" min="2019-08-05" max="2020-08-05")
 
 							input(hidden, name="page", value=page)
 							input(hidden, name="img", value=img)
+						
 
 						button.btn.btn-primary(type="submit")
 							i.fa.fa-fw.fa-lg.fa-check-circle
 							| Search
+
+	.row
+		.col-md-12
+			.tile
+				h3.tile-title Statistic !{page}
+				.tile-body
+					form(action="/statistic" method="POST")
+						if (img == 'bundesliga')
+							.form-group
+								label(for='exampleSelect1') Select team
+								select#exampleSelect1.form-control(name="team")
+									option Bayern Munich
+									option Dortmund
+									option RB Leipzig
+									option M'gladbach
+									option Leverkusen
+									option Hoffenheim
+									option Wolfsburg
+									option Freiburg
+									option Ein Frankfurt
+									option Hertha
+									option Union Berlin
+									option Schalke 04
+									option Mainz
+									option FC Koln
+									option Augsburg
+									option Werder Bremen
+									option Fortuna Dusseldorf
+									option Paderborn
+
+						if (img == 'premier')
+							.form-group
+								label(for='exampleSelect1') Select team
+								select#exampleSelect1.form-control(name="team")
+									option Arsenal
+									option Aston Villa
+									option Bournemouth
+									option Brighton
+									option Burnley
+									option Chelsea
+									option Crystal Palace
+									option Everton
+									option Leicester
+									option Liverpool
+									option Man City
+									option Man United
+									option Newcastle
+									option Norwich
+									option Sheffield United
+									option Southampton
+									option Tottenham
+									option Watford
+									option West Ham
+									option Wolves
+
+						if (img == 'la-liga')
+							.form-group
+								label(for='exampleSelect1') Select team
+								select#exampleSelect1.form-control(name="team")
+									option Real Madrid
+									option Barcelona
+									option Ath Madrid
+									option Sevilla
+									option Villarreal
+									option Sociedad
+									option Granada
+									option Getafe
+									option Valencia
+									option Osasuna
+									option Ath Bilbao
+									option Levante
+									option Valladolid
+									option Eibar
+									option Betis
+									option Alaves
+									option Celta
+									option Leganes
+									option Mallorca
+									option Espanol
+
+						if (img == 'ligue-1')
+							.form-group
+								label(for='exampleSelect1') Select team
+								select#exampleSelect1.form-control(name="team")
+									option Paris SG
+									option Marseille
+									option Rennes
+									option Lille
+									option Nice
+									option Reims
+									option Lyon
+									option Montpellier
+									option Monaco
+									option Strasbourg
+									option Angers
+									option Bordeaux
+									option Nantes
+									option Brest
+									option Metz
+									option Dijon
+									option St Etienne
+									option Nimes
+									option Amiens
+									option Toulouse
+
+						if (img == 'serie-a')
+							.form-group
+								label(for='exampleSelect1') Select team
+								select#exampleSelect1.form-control(name="team")
+									option Atalanta
+									option Bologna
+									option Brescia
+									option Cagliari
+									option Fiorentina
+									option Genoa
+									option Verona
+									option Inter
+									option Juventus
+									option Lazio
+									option Lecce
+									option Milan
+									option Napoli
+									option Parma
+									option Roma
+									option Sampdoria
+									option Sassuolo
+									option Spal
+									option Torino
+									option Udinese
+
+						input(hidden, name="page", value=page)
+						input(hidden, name="img", value=img)
+						
+
+						button.btn.btn-primary(type="submit")
+							i.fa.fa-fw.fa-lg.fa-check-circle
+							| Statistic
+					
