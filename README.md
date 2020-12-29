@@ -1,10 +1,10 @@
 # ElasticSearchDemo
-Elastic Search Demo - Database Seminar - HCMUT (2020-2021)
+Elasticsearch Demo - Database Seminar - HCMUT (2020-2021)
 
 ## Install
-Install [elastic search](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) and [logstash](https://www.elastic.co/guide/en/logstash/current/installing-logstash.html)
+Install [elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) and [logstash](https://www.elastic.co/guide/en/logstash/current/installing-logstash.html)
 
-Install Nodejs, and install some package of nodejs below (run at project folder)
+Install nodejs package
 ```bash
 npm install express
 npm install path
@@ -23,7 +23,7 @@ Then, open terminal, start logstash and add data to elasticsearch
 ```bash
 sudo systemctl start logstash
 cd /usr/share/logstash/bin
-./logstash -f ***path to above conf file***
+./logstash -f *path to above conf file (logstash.conf)*
 ```
 
 ## Run
