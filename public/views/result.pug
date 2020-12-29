@@ -19,17 +19,19 @@ block content
 		.col-md-12
 			.tile
 				h3.tile-title Search !{page}
-				table.table
-					thead
-						tr
-							th First Name
-							th Last Name
-							th Username
-					tbody
-						tr
-							td Mark
-							td Otto
-							td @mdo
+				.tile-body
+					.table-responsive
+						table.table.table-hover.table-bordered#sampleTable
+							thead
+								tr
+									th First Name
+									th Last Name
+									th Username
+							tbody
+								tr
+									td Mark
+									td Otto
+									td @mdo
 
 block specific-js
 	// Data table plugin

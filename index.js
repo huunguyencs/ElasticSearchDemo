@@ -13,7 +13,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(express.static(path.join(__dirname, './public/')));
 
 
-// connect elastic search
+// // connect elastic search
 // const { Client } = require('@elastic/elasticsearch');
 
 // const client = new Client({
@@ -73,3 +73,8 @@ app.post('/search',urlencodedParser,(req,res)=>{
 app.listen(port,()=>{
     console.log('Running at http://localhost:' + port);
 });
+
+
+function search(index, param){
+    
+}
