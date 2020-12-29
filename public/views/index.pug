@@ -1,0 +1,25 @@
+extends layouts/_layout.pug
+
+block variables
+	- var activePage = 'index';
+	- var activeGroup = 'none';
+
+block title
+	title Home
+
+block content
+	.app-title
+		div
+			h1
+				i.fa.fa-home
+				|  Home
+			p Start a beautiful journey here
+
+		ul.app-breadcrumb.breadcrumb
+			li.breadcrumb-item
+				a(href="/")
+					i.fa.fa-home.fa-lg
+	.row
+		.col-md-12
+			.tile
+				.tile-body

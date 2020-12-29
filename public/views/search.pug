@@ -1,0 +1,44 @@
+extends layouts/_layout.pug
+
+block variables
+	- var activePage = img;
+	- var activeGroup = 'none';
+
+block title
+	title !{page}
+
+block content
+	.app-title
+		div
+			h1
+				img(src="resources/images/"+img+".png", width="30px" class="mr-3")
+				|  !{page}
+			p Start a beautiful journey here
+	.row
+		.col-md-12
+			.tile
+				h3.tile-title Cập nhật/ Thêm
+				.tile-body
+					form(action="/search" method="POST")
+						.form-group
+							label.control-label Hãng xe
+							input.form-control(type="text", placeholder="Nhập hãng xe, loại xe", name="Brand" value=value?value.Brand:"")
+
+						.form-group
+							label.control-label Biển số
+							input.form-control(type="text", placeholder="Nhập biển số", name="Number" value=value?value.Number:"")
+
+						.form-group
+							label.control-label Loại
+							input.form-control(type="number", placeholder="Nhập loại", name="Type" value=value?value.Type:"" max="2" min="1")
+							div Ghi chú
+								ul
+									li 1. Xe liên tỉnh
+									li 2. Xe nội thành
+
+							input(hidden, name="page", value=page)
+							input(hidden, name="img", value=img)
+
+						button.btn.btn-primary(type="submit")
+							i.fa.fa-fw.fa-lg.fa-check-circle
+							| Search
