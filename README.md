@@ -17,7 +17,7 @@ npm install @elastic/elasticsearch
 
 In datasource/logstash.conf, edit `path` field and `index` field with index name.
 ### Example
-    With `bundesliga`, edit path to `bundesliga1920.csv` and index `bundesliga1920`.
+With `bundesliga`, edit path to `bundesliga1920.csv` and index `bundesliga1920`.
 
 Then, open terminal, start logstash and add data to elasticsearch
 ```bash
