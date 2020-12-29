@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, './public/')));
 //     }
 // }, (err, result) => {
 //     if (err) console.log(err)
-//     else console.log(result["body"]["hits"]["hits"][0]["_source"]["AwayTeam"]);
+//     else console.log(result["body"]["hits"]["hits"][1]["_source"]["HomeTeam"]);
 // })
 
 app.get('/',(req,res)=>{
@@ -66,16 +66,24 @@ app.get('/serie-a',(req,res)=>{
 app.post('/search',urlencodedParser,(req,res)=>{
     let page = req.body.page;
     let img = req.body.img;
+    let team = req.body.team;
     let fromdate = req.body.fromdate;
-    console.log(fromdate);
-    res.render('result',{page:page,img:img});
+    let todate = req.body.todate;
+    if (team || (fromdate && todate)){
+        list = search(img + '1920',team,fromdate,todate);
+        res.render('result',{page:page,img:img,list:list});
+    }
+    else{
+        res.render('search',{page:page,img:img});
+    }
 });
 
 app.post('/statistic',urlencodedParser,(req,res)=>{
     let page = req.body.page;
     let team = req.body.team;
     let img = req.body.img;
-    res.render('statistic',{page:page,team:team,img:img});
+    result = statistic(img + '1920',team);
+    res.render('statistic',{page:page,team:team,img:img,result:result});
 })
 
 app.listen(port,()=>{
@@ -83,6 +91,10 @@ app.listen(port,()=>{
 });
 
 
-function search(index, param){
+function search(index, team, fromdate, todate){
+
+}
+
+function statistic(index,team){
 
 }
