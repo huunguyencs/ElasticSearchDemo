@@ -140,7 +140,14 @@ app.post('/search',urlencodedParser,(req,res)=>{
                                 }
                             ]
                         }
-                    }
+                    },
+                    sort : [
+                        {
+                            Date : {
+                                order : 'asc'
+                            }
+                        }
+                    ]
                 },
                 size: 38
             },(err,result)=>{
@@ -184,7 +191,94 @@ app.post('/search',urlencodedParser,(req,res)=>{
 
 app.post('/statistic',urlencodedParser,(req,res)=>{
     let page = req.body.page;
-    
+    let team = req.body.team;
+    let img = req.body.img;
+    if (team == 'All'){
+        client.search({
+            index: img,
+            body: {
+                query : {
+                    match_all :{}
+                },
+                size: 0,
+                aggs: {
+                    home_goal : {
+                        stats : {
+                            field: 'FTHG'
+                        }
+                    }
+                }
+            }
+        },(err,result)=>{
+            if (err) throw err;
+            var home = result.body.aggregations.home_goal;
+            client.search({
+                index: img,
+                body: {
+                    query : {
+                        match_all :{}
+                    },
+                    size: 0,
+                    aggs: {
+                        away_goal : {
+                            stats : {
+                                field: 'FTAG'
+                            }
+                        }
+                    }
+                }
+            },(err,result)=>{
+                if(err) throw err;
+                var away = result.body.aggregations.away_goal;
+                res.render('statistic',{page:page,team:team,home:home,away:away,img:img})
+            })
+        })
+    }
+    else{
+        client.search({
+            index: img,
+            body: {
+                query : {
+                    match :{
+                        HomeTeam : team
+                    }
+                },
+                size: 0,
+                aggs: {
+                    home_goal : {
+                        stats : {
+                            field: 'FTHG'
+                        }
+                    }
+                }
+            }
+        },(err,result)=>{
+            if (err) throw err;
+            var home = result.body.aggregations.home_goal;
+            client.search({
+                index: img,
+                body: {
+                    query : {
+                        match :{
+                            AwayTeam : team
+                        }
+                    },
+                    size: 0,
+                    aggs: {
+                        away_goal : {
+                            stats : {
+                                field: 'FTAG'
+                            }
+                        }
+                    }
+                }
+            },(err,result)=>{
+                if(err) throw err;
+                var away = result.body.aggregations.away_goal;
+                res.render('statistic',{page:page,team:team,home:home,away:away,img:img})
+            })
+        })
+    }
     
 })
 

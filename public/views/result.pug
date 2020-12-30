@@ -25,20 +25,24 @@ block content
 				
 				.tile-body
 					.table-responsive
-						table.table.table-hover.table-bordered#sampleTable
+						table.table.table-hover.table-bordered
 							thead
 								tr
+									th No
 									th Date
 									th HomeTeam
 									th Result
 									th AwayTeam
 							tbody
-								each ele in list
-									tr
-										td !{ele._source.Date.toString().substr(4.2) + "/" + ele._source.Date.toString().substr(2,2) + "/20" + ele._source.Date.toString().substr(0,2)}
-										td !{ele._source.HomeTeam}
-										td !{ele._source.FTHG} - !{ele._source.FTAG}
-										td !{ele._source.AwayTeam}
+								block variable
+									- var i = 1
+									each ele in list
+										tr
+											td !{i++}
+											td !{ele._source.Date.toString().substr(4.2) + "/" + ele._source.Date.toString().substr(2,2) + "/20" + ele._source.Date.toString().substr(0,2)}
+											td !{ele._source.HomeTeam}
+											td !{ele._source.FTHG} - !{ele._source.FTAG}
+											td !{ele._source.AwayTeam}
 
 block specific-js
 	// Data table plugin

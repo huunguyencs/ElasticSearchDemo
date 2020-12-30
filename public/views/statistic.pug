@@ -24,18 +24,14 @@ block content
 					if (team == 'All')
 						h4 !{page}
 						ul
-							li Sum of goals:
-							li Average goal of one match:
-							li Max goal in one match:
-							li Min goal in one match:
+							li Num of match: !{home.count}
+							li Sum of goals: !{home.sum + away.sum}
+							li Average goal of one match: !{home.avg + away.avg}
 					
 					else
 						h4 !{team}
 						ul
-							li Win:
-							li Loss:
-							li Sum of goals:
-							li Average goal of one match:
-							li Max goal in one match:
-							li Min goal in one match:			
+							li Num of match: !{home.count + away.count}
+							li Sum of goals: !{home.sum + away.sum}
+							li Average goal of one match: !{(home.avg + away.avg)/2}		
 
