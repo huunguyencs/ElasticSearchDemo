@@ -23,7 +23,7 @@ Then, open terminal, start logstash and add data to elasticsearch
 ```bash
 sudo systemctl start logstash
 cd /usr/share/logstash/bin
-./logstash -f *path to above conf file (logstash.conf)*
+sudo ./logstash -f *path to above conf file (logstash.conf)*
 ```
 
 ## Run

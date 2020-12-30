@@ -1,4 +1,4 @@
-const port = "8888";
+const port = "8889";
 
 
 // set up
@@ -14,14 +14,14 @@ app.use(express.static(path.join(__dirname, './public/')));
 
 
 // // connect elastic search
-// const { Client } = require('@elastic/elasticsearch');
+const { Client } = require('@elastic/elasticsearch');
 
-// const client = new Client({
-//   node: 'http://localhost:9200',
-//   auth: {
-//     apiKey: 'base64EncodedKey'
-//   }
-// });
+const client = new Client({
+  node: 'http://localhost:9200',
+  auth: {
+    apiKey: 'base64EncodedKey'
+  }
+});
 
 // client.search({
 //     index: 'bundesliga1920',
@@ -67,63 +67,33 @@ app.post('/search',urlencodedParser,(req,res)=>{
     let page = req.body.page;
     let img = req.body.img;
     let team = req.body.team;
-    let fromdate = req.body.fromdate;
-    if (fromdate) fromdate = dateConvert(fromdate);
-    let todate = req.body.todate;
-    if (todate) todate = dateConvert(todate);
-    if (team || (fromdate && todate)){
-        if (team && fromdate && todate) {
-            client.search({
-                index : index,
-                body: {
-    
-                }
-            },(err,result)=>{
-                if (err) throw err;
-                list = null;
-                res.render('result',{page:page,img:img,list:list});
-            });
-        }
-        else if (team) {
-            client.search({
-                index: index,
-                body: {
-                    query: {
-                        bool : {
-                            should : [
-                                {
-                                    match: {
-                                        "HomeTeam" : team
-                                    }
-                                },
-                                {
-                                    match: {
-                                        "AwayTeam" : team
-                                    }
+    if (team) {
+        client.search({
+            index: img,
+            body: {
+                query: {
+                    bool : {
+                        should : [
+                            {
+                                match: {
+                                    HomeTeam : team
                                 }
-                            ]
-                        }
+                            },
+                            {
+                                match: {
+                                    AwayTeam: team
+                                }
+                            }
+                        ]
                     }
                 }
-            },(err,result)=>{
-                if (err) throw err;
-                list = null;
-                res.render('result',{page:page,img:img,list:list});
-            })
-        }
-        else {
-            client.search({
-                index : index,
-                body: {
-    
-                }
-            },(err,result)=>{
-                if (err) throw err;
-                list = null;
-                res.render('result',{page:page,img:img,list:list});
-            });
-        }
-        
+            },
+            size: 100
+        },(err,result)=>{
+            if (err) throw err;
+            list = result["body"]["hits"]["hits"];
+            res.render('result',{page:page,img:img,list:list,team:team});
+        })
     }
     else{
         res.render('search',{page:page,img:img});
@@ -134,9 +104,40 @@ app.post('/statistic',urlencodedParser,(req,res)=>{
     let page = req.body.page;
     let team = req.body.team;
     let img = req.body.img;
-    // result = statistic(img + '1920',team);
-    result = 0;
-    res.render('statistic',{page:page,team:team,img:img,result:result});
+    if (team == 'All'){
+        client.search({
+            index: img,
+            body:{
+                query: {
+                    match: {
+                        HomeTeam :{
+                            query: team
+                        }
+                    }
+                },
+                aggs: {
+                    home_goal_stats : {
+                        stats: {
+                            field : "FTHG"
+                        }
+                    },
+                    away_goal_stats : {
+                        stats :{
+                            field : "FTAG"
+                        }
+                    }
+                }
+            }
+        },(err,result)=>{
+            if (err) throw err;
+            console.log(result);
+            // res.render('statistic',{page:page,team:team,img:img,result:result});
+        })
+    }
+    else{
+        // res.render('statistic',{page:page,team:team,img:img,result:result});
+    }
+    
 })
 
 app.listen(port,()=>{
