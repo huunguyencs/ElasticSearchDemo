@@ -23,9 +23,19 @@ block content
 						.form-group
 							label.control-label Team
 							input.form-control(type="text", placeholder="Input team's name", name="team")
+						.row
+							.form-group.col-md-2
+								label.control-label FromDate
+								input.form-control(type="date", placeholder="2019-05-06", name="fromdate")
 
-							input(hidden, name="page", value=page)
-							input(hidden, name="img", value=img)
+							.form-group.col-md-2
+								label.control-label ToDate
+								input.form-control(type="date", placeholder="2020-05-06", name="todate")
+
+
+
+						input(hidden, name="page", value=page)
+						input(hidden, name="img", value=img)
 						
 
 						button.btn.btn-primary(type="submit")
@@ -43,59 +53,57 @@ block content
 								label(for='exampleSelect1') Select team
 								select#exampleSelect1.form-control(name="team")
 									option All
-									option Bayern Munich
+									option Bayern
 									option Dortmund
-									option RB Leipzig
+									option Leipzig
 									option M'gladbach
 									option Leverkusen
 									option Hoffenheim
 									option Wolfsburg
 									option Freiburg
-									option Ein Frankfurt
+									option Frankfurt
 									option Hertha
-									option Union Berlin
-									option Schalke 04
+									option U.Berlin
+									option Schalke
 									option Mainz
-									option FC Koln
+									option Koln
 									option Augsburg
-									option Werder Bremen
-									option Fortuna Dusseldorf
+									option W.Bremen
+									option Fortuna
 									option Paderborn
-
 						if (img == 'premier')
 							.form-group
 								label(for='exampleSelect1') Select team
 								select#exampleSelect1.form-control(name="team")
 									option All
 									option Arsenal
-									option Aston Villa
+									option A.Villa
 									option Bournemouth
 									option Brighton
 									option Burnley
 									option Chelsea
-									option Crystal Palace
+									option Crystal
 									option Everton
 									option Leicester
 									option Liverpool
-									option Man City
-									option Man United
+									option ManCity
+									option ManUnited
 									option Newcastle
 									option Norwich
-									option Sheffield United
+									option Sheffield
 									option Southampton
 									option Tottenham
 									option Watford
-									option West Ham
+									option WestHam
 									option Wolves
-
 						if (img == 'la-liga')
 							.form-group
 								label(for='exampleSelect1') Select team
 								select#exampleSelect1.form-control(name="team")
 									option All
-									option Real Madrid
+									option RealMadrid
 									option Barcelona
-									option Ath Madrid
+									option A.Madrid
 									option Sevilla
 									option Villarreal
 									option Sociedad
@@ -103,7 +111,7 @@ block content
 									option Getafe
 									option Valencia
 									option Osasuna
-									option Ath Bilbao
+									option A.Bilbao
 									option Levante
 									option Valladolid
 									option Eibar
@@ -113,13 +121,12 @@ block content
 									option Leganes
 									option Mallorca
 									option Espanol
-
 						if (img == 'ligue-1')
 							.form-group
 								label(for='exampleSelect1') Select team
 								select#exampleSelect1.form-control(name="team")
 									option All
-									option Paris SG
+									option PSG
 									option Marseille
 									option Rennes
 									option Lille
@@ -135,11 +142,10 @@ block content
 									option Brest
 									option Metz
 									option Dijon
-									option St Etienne
+									option Etienne
 									option Nimes
 									option Amiens
 									option Toulouse
-
 						if (img == 'serie-a')
 							.form-group
 								label(for='exampleSelect1') Select team
@@ -165,12 +171,9 @@ block content
 									option Spal
 									option Torino
 									option Udinese
-
 						input(hidden, name="page", value=page)
 						input(hidden, name="img", value=img)
-						
 
 						button.btn.btn-primary(type="submit")
 							i.fa.fa-fw.fa-lg.fa-check-circle
 							| Statistic
-					

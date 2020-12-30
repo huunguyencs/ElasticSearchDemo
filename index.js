@@ -1,4 +1,4 @@
-const port = "8889";
+const port = "8888";
 
 
 // set up
@@ -67,33 +67,115 @@ app.post('/search',urlencodedParser,(req,res)=>{
     let page = req.body.page;
     let img = req.body.img;
     let team = req.body.team;
-    if (team) {
-        client.search({
-            index: img,
-            body: {
-                query: {
-                    bool : {
-                        should : [
-                            {
-                                match: {
-                                    HomeTeam : team
+    let fromdate = req.body.fromdate;
+    if (fromdate) var fromDate = dateConvert(fromdate);
+    let todate = req.body.todate;
+    if (todate) var toDate = dateConvert(todate);
+    if (team || (fromdate && todate)) {
+        if (team && fromdate && todate){
+            client.search({
+                index: img,
+                body: {
+                    query: {
+                        bool : {
+                            must : [
+                                {
+                                    bool : {
+                                        should : [
+                                            {
+                                                match : {
+                                                    HomeTeam : team
+                                                }
+                                            },
+                                            {
+                                                match : {
+                                                    AwayTeam : team
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    range : {
+                                        Date : {
+                                            gte : fromDate,
+                                            lte : toDate
+                                        }
+                                    }
                                 }
-                            },
-                            {
-                                match: {
-                                    AwayTeam: team
-                                }
+                            ]
+                        }                     
+                    },
+                    sort : [
+                        {
+                            Date : {
+                                order : 'asc'
                             }
-                        ]
+                        }
+                    ]
+                },
+                size: 100
+            },(err,result)=>{
+                if (err) throw err;
+                list = result.body.hits.hits;
+                res.render('result',{page:page,img:img,list:list,team:team,fromdate:fromdate,todate:todate});
+            })
+        }
+        else if (team){
+            client.search({
+                index: img,
+                body: {
+                    query: {
+                        bool : {
+                            should : [
+                                {
+                                    match: {
+                                        HomeTeam : team
+                                    }
+                                },
+                                {
+                                    match: {
+                                        AwayTeam: team
+                                    }
+                                }
+                            ]
+                        }
                     }
-                }
-            },
-            size: 100
-        },(err,result)=>{
-            if (err) throw err;
-            list = result["body"]["hits"]["hits"];
-            res.render('result',{page:page,img:img,list:list,team:team});
-        })
+                },
+                size: 38
+            },(err,result)=>{
+                if (err) throw err;
+                list = result.body.hits.hits;
+                res.render('result',{page:page,img:img,list:list,team:team});
+            })
+        }
+        else {
+            client.search({
+                index: img,
+                body: {
+                    query : {
+                        range : {
+                            Date : {
+                                gte : fromDate,
+                                lte : toDate
+                            }
+                        }
+                    },
+                    sort : [
+                        {
+                            Date : {
+                                order : 'asc'
+                            }
+                        }
+                    ]
+                },
+                size: 50
+            },(err,result)=>{
+                if (err) throw err;
+                list = result['body']['hits']['hits'];
+                res.render('result',{page:page,img:img,list:list,fromdate:fromdate,todate:todate})
+            })
+        }
     }
     else{
         res.render('search',{page:page,img:img});
@@ -102,41 +184,7 @@ app.post('/search',urlencodedParser,(req,res)=>{
 
 app.post('/statistic',urlencodedParser,(req,res)=>{
     let page = req.body.page;
-    let team = req.body.team;
-    let img = req.body.img;
-    if (team == 'All'){
-        client.search({
-            index: img,
-            body:{
-                query: {
-                    match: {
-                        HomeTeam :{
-                            query: team
-                        }
-                    }
-                },
-                aggs: {
-                    home_goal_stats : {
-                        stats: {
-                            field : "FTHG"
-                        }
-                    },
-                    away_goal_stats : {
-                        stats :{
-                            field : "FTAG"
-                        }
-                    }
-                }
-            }
-        },(err,result)=>{
-            if (err) throw err;
-            console.log(result);
-            // res.render('statistic',{page:page,team:team,img:img,result:result});
-        })
-    }
-    else{
-        // res.render('statistic',{page:page,team:team,img:img,result:result});
-    }
+    
     
 })
 
@@ -147,6 +195,6 @@ app.listen(port,()=>{
 
 
 function dateConvert(date){
-    d =  date.substr(2,2) + date.substr(5,2) + date(8,2);
+    d =  date.substr(2,2) + date.substr(5,2) + date.substr(8,2);
     return parseInt(d);
 }
