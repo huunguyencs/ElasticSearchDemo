@@ -68,10 +68,62 @@ app.post('/search',urlencodedParser,(req,res)=>{
     let img = req.body.img;
     let team = req.body.team;
     let fromdate = req.body.fromdate;
+    if (fromdate) fromdate = dateConvert(fromdate);
     let todate = req.body.todate;
+    if (todate) todate = dateConvert(todate);
     if (team || (fromdate && todate)){
-        list = search(img + '1920',team,fromdate,todate);
-        res.render('result',{page:page,img:img,list:list});
+        if (team && fromdate && todate) {
+            client.search({
+                index : index,
+                body: {
+    
+                }
+            },(err,result)=>{
+                if (err) throw err;
+                list = null;
+                res.render('result',{page:page,img:img,list:list});
+            });
+        }
+        else if (team) {
+            client.search({
+                index: index,
+                body: {
+                    query: {
+                        bool : {
+                            should : [
+                                {
+                                    match: {
+                                        "HomeTeam" : team
+                                    }
+                                },
+                                {
+                                    match: {
+                                        "AwayTeam" : team
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },(err,result)=>{
+                if (err) throw err;
+                list = null;
+                res.render('result',{page:page,img:img,list:list});
+            })
+        }
+        else {
+            client.search({
+                index : index,
+                body: {
+    
+                }
+            },(err,result)=>{
+                if (err) throw err;
+                list = null;
+                res.render('result',{page:page,img:img,list:list});
+            });
+        }
+        
     }
     else{
         res.render('search',{page:page,img:img});
@@ -82,7 +134,8 @@ app.post('/statistic',urlencodedParser,(req,res)=>{
     let page = req.body.page;
     let team = req.body.team;
     let img = req.body.img;
-    result = statistic(img + '1920',team);
+    // result = statistic(img + '1920',team);
+    result = 0;
     res.render('statistic',{page:page,team:team,img:img,result:result});
 })
 
@@ -91,10 +144,8 @@ app.listen(port,()=>{
 });
 
 
-function search(index, team, fromdate, todate){
 
-}
-
-function statistic(index,team){
-
+function dateConvert(date){
+    d =  date.substr(2,2) + date.substr(5,2) + date(8,2);
+    return parseInt(d);
 }

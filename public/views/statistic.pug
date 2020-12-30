@@ -21,6 +21,15 @@ block content
 				h2.tile-title Statistic !{page}
 				.tile-body
 					.table-responsive
+					if (team == 'All')
+						h4 !{page}
+						ul
+							li Sum of goals scored:
+							li Sum of goals conceded:
+							li Sum of yellow card:
+							li Sum of red card:
+
+					else
 						h4 Team: !{team}
 						ul
 							li Sum point:
@@ -31,3 +40,4 @@ block content
 							li Sum of goals conceded:
 							li Sum of yellow card:
 							li Sum of red card:
+
