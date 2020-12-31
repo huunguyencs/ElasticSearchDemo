@@ -119,12 +119,13 @@ app.post('/search',urlencodedParser,(req,res)=>{
                         }
                     },
                     sort : sortby                    
-                }
+                },
+                size: 2500
             }, (err, result) => {
                 if (err) throw err;
                 let list = result.body.hits;
                 let count = list.total.value;
-                res.render('result',{list:list.hits,count:count,search:search});
+                res.render('result',{list:list.hits,count:count,search:search,fromprice:fromprice,toprice:toprice});
             })
         }
         else if (search) {
@@ -133,7 +134,8 @@ app.post('/search',urlencodedParser,(req,res)=>{
                 body: {
                     query : searchWord,
                     sort : sortby                    
-                }
+                },
+                size: 2500
             }, (err, result) => {
                 if (err) throw err;
                 let list = result.body.hits;
@@ -149,12 +151,13 @@ app.post('/search',urlencodedParser,(req,res)=>{
                         range :searchPrice
                     },
                     sort : sortby                    
-                }
+                },
+                size: 2500
             }, (err, result) => {
                 if (err) throw err;
                 let list = result.body.hits;
                 let count = list.total.value;
-                res.render('result',{list:list.hits,count:count,search:search});
+                res.render('result',{list:list.hits,count:count,fromprice,toprice});
             })
         }
     }

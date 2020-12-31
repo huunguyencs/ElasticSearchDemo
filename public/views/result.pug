@@ -18,35 +18,42 @@ block content
 	.row
 		.col-md-12
 			.tile
-				h3.tile-title Result of keyword "!{search}"
+				if (search)
+					h3.tile-title Result of keyword "!{search}"
+				if (toprice && fromprice)
+					h3.tile-title From !{fromprice} $ to !{toprice} $
 				i.md-2 Found !{count} result.
 				.tile-body
 					.table-responsive
 						table.table.table-hover.table-bordered
 							thead
 								tr
+									th No.
 									th Name
 									th Description
 									th Brand
 									th Categories
 									th Type
-									th Price
+									th Price ($)
 									th Popularity
 							tbody
-								each ele in list
-									block variable
-										- var item = ele._source
-										tr
-											td !{item.name}
-											td !{item.description}
-											td !{item.brand}
-											td
-												each c in item.categories
-													p - !{c}
-													br
-											td !{item.type}
-											td !{item.price}
-											td !{item.popularity}
+								block variable
+									- var index = 1
+									each ele in list
+										block variable
+											- var item = ele._source
+											tr
+												td !{index++}
+												td !{item.name}
+												td !{item.description}
+												td !{item.brand}
+												td
+													each c in item.categories
+														p - !{c}
+														br
+												td !{item.type}
+												td !{item.price}
+												td !{item.popularity}
 
 block specific-js
 	// Data table plugin
