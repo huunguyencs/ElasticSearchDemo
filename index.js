@@ -102,7 +102,7 @@ app.post('/search',urlencodedParser,(req,res)=>{
             }
         ]
     }
-
+    sort = sort=='_score'?'relation keyword':sort;
     if (search || (toprice && fromprice)) {
         if (search && toprice && fromprice){
             client.search({
@@ -125,7 +125,7 @@ app.post('/search',urlencodedParser,(req,res)=>{
                 if (err) throw err;
                 let list = result.body.hits;
                 let count = list.total.value;
-                res.render('result',{list:list.hits,count:count,search:search,fromprice:fromprice,toprice:toprice});
+                res.render('result',{list:list.hits,count:count,search:search,fromprice:fromprice,toprice:toprice,sort:sort});
             })
         }
         else if (search) {
@@ -140,7 +140,7 @@ app.post('/search',urlencodedParser,(req,res)=>{
                 if (err) throw err;
                 let list = result.body.hits;
                 let count = list.total.value;
-                res.render('result',{list:list.hits,count:count,search:search});
+                res.render('result',{list:list.hits,count:count,search:search,sort:sort});
             })
         }
         else {
@@ -157,7 +157,7 @@ app.post('/search',urlencodedParser,(req,res)=>{
                 if (err) throw err;
                 let list = result.body.hits;
                 let count = list.total.value;
-                res.render('result',{list:list.hits,count:count,fromprice,toprice});
+                res.render('result',{list:list.hits,count:count,fromprice,toprice,sort:sort});
             })
         }
     }
