@@ -28,7 +28,8 @@ Then open your browser and go to `localhost:8888`
 
 ## Feature
 
-1. Search by keyword
+1. Search by keyword:
+
     Elastic search will score result by your keyword. The item result, which is more closely with your keyword, will be ordered first.
 2. Search by price range
 3. Sort
