@@ -1,25 +1,53 @@
 extends layouts/_layout.pug
 
 block variables
-	- var activePage = 'index';
+	- var activePage = 'none';
 	- var activeGroup = 'none';
 
 block title
-	title Home
+	title Search
 
 block content
 	.app-title
 		div
 			h1
-				i.fa.fa-home
-				|  Home
+				i.fa.fa-search
+				|  Search
 			p Start a beautiful journey here
-
-		ul.app-breadcrumb.breadcrumb
-			li.breadcrumb-item
-				a(href="/")
-					i.fa.fa-home.fa-lg
 	.row
 		.col-md-12
 			.tile
+				h3.tile-title Search 
 				.tile-body
+					form(action="/search" method="POST")
+						.form-group
+							label.control-label Search
+							input.form-control(type="text", placeholder="Input keyword", name="search")
+
+						.row
+							.form-group.col-md-2 Price
+								br
+								label.control-label From
+								input.form-control(type="number", placeholder='From price ($)', name="fromprice")
+
+							.form-group.col-md-2
+								br
+								label.control-label To
+								input.form-control(type="number", placeholder='To price (S' name="toprice")
+						.form-group
+							.form-check
+								label.form-check-label
+									input#optionsRadios1.form-check-input(type='radio', name='sort', value='_score', checked='')
+									| Sort by relation keyword
+							.form-check
+								label.form-check-label
+									input#optionsRadios2.form-check-input(type='radio', name='sort', value='popularity')
+									| Sort by popularity
+							.form-check
+								label.form-check-label
+									input#optionsRadios2.form-check-input(type='radio', name='sort', value='price')
+									| Sort by price							
+
+						button.btn.btn-primary(type="submit")
+							i.fa.fa-fw.fa-lg.fa-check-circle
+							| Search

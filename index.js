@@ -15,6 +15,7 @@ app.use(express.static(path.join(__dirname, './public/')));
 
 // // connect elastic search
 const { Client } = require('@elastic/elasticsearch');
+const { match } = require('assert');
 
 const client = new Client({
   node: 'http://localhost:9200',
@@ -23,17 +24,6 @@ const client = new Client({
   }
 });
 
-// client.search({
-//     index: 'bundesliga1920',
-//     body: {
-//         query: {
-//             match: { "AwayTeam" : "Dortmund" }
-//         }
-//     }
-// }, (err, result) => {
-//     if (err) console.log(err)
-//     else console.log(result["body"]["hits"]["hits"][1]["_source"]["HomeTeam"]);
-// })
 
 app.get('/',(req,res)=>{
     res.render('index');
@@ -43,241 +33,133 @@ app.get('/index',(req,res)=>{
     res.redirect('/');
 });
 
-app.get('/premier',(req,res)=>{
-    res.render('search',{page: 'Premier league',img:'premier'});
-});
-
-app.get('/bundesliga',(req,res)=>{
-    res.render('search',{page: 'Bundesliga',img:'bundesliga'});
-});
-
-app.get('/la-liga',(req,res)=>{
-    res.render('search',{page: 'La liga',img:'la-liga'});
-});
-
-app.get('/ligue-1',(req,res)=>{
-    res.render('search',{page: 'Ligue 1',img:'ligue-1'});
-});
-
-app.get('/serie-a',(req,res)=>{
-    res.render('search',{page: 'Serie A',img:'serie-a'});
-});
 
 app.post('/search',urlencodedParser,(req,res)=>{
-    let page = req.body.page;
-    let img = req.body.img;
-    let team = req.body.team;
-    let fromdate = req.body.fromdate;
-    if (fromdate) var fromDate = dateConvert(fromdate);
-    let todate = req.body.todate;
-    if (todate) var toDate = dateConvert(todate);
-    if (team || (fromdate && todate)) {
-        if (team && fromdate && todate){
+    let search = req.body.search;
+    let sort = req.body.sort;
+    let fromprice = req.body.fromprice;
+    let toprice = req.body.toprice;
+    let searchWord = {
+        bool : {
+            should : [
+                {
+                    match : {
+                        name : search
+                    }
+                },
+                {
+                    match : {
+                        brand: search
+                    }
+                },
+                {
+                    match : {
+                        description : search
+                    }
+                },
+                {
+                    match : {
+                        type : search
+                    }
+                },
+                {
+                    match : {
+                        categories : search 
+                    }
+                }
+            ]
+        }
+    }
+
+    let searchPrice = {
+        price  : {
+            gte: fromprice,
+            lte: toprice
+        }
+    }
+
+    let sortby;
+    if (sort == '_score') {
+        sortby = [
+            {
+                _score : {
+                    order : 'desc'
+                }
+            }
+        ]
+    }
+    else if (sort == 'popularity'){
+        sortby = [
+            {
+                popularity : 'desc'
+            }
+        ]
+    }
+    else{
+        sortby = [
+            {
+                price : 'desc'
+            }
+        ]
+    }
+
+    if (search || (toprice && fromprice)) {
+        if (search && toprice && fromprice){
             client.search({
-                index: img,
+                index: 'camera',
                 body: {
-                    query: {
-                        bool : {
+                    query : {
+                        bool :{
                             must : [
+                                searchWord,
                                 {
-                                    bool : {
-                                        should : [
-                                            {
-                                                match : {
-                                                    HomeTeam : team
-                                                }
-                                            },
-                                            {
-                                                match : {
-                                                    AwayTeam : team
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    range : {
-                                        Date : {
-                                            gte : fromDate,
-                                            lte : toDate
-                                        }
-                                    }
+                                    range :searchPrice
                                 }
                             ]
-                        }                     
-                    },
-                    sort : [
-                        {
-                            Date : {
-                                order : 'asc'
-                            }
                         }
-                    ]
-                },
-                size: 100
-            },(err,result)=>{
+                    },
+                    sort : sortby                    
+                }
+            }, (err, result) => {
                 if (err) throw err;
-                list = result.body.hits.hits;
-                res.render('result',{page:page,img:img,list:list,team:team,fromdate:fromdate,todate:todate});
+                let list = result.body.hits;
+                let count = list.total.value;
+                res.render('result',{list:list.hits,count:count,search:search});
             })
         }
-        else if (team){
+        else if (search) {
             client.search({
-                index: img,
+                index: 'camera',
                 body: {
-                    query: {
-                        bool : {
-                            should : [
-                                {
-                                    match: {
-                                        HomeTeam : team
-                                    }
-                                },
-                                {
-                                    match: {
-                                        AwayTeam: team
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    sort : [
-                        {
-                            Date : {
-                                order : 'asc'
-                            }
-                        }
-                    ]
-                },
-                size: 38
-            },(err,result)=>{
+                    query : searchWord,
+                    sort : sortby                    
+                }
+            }, (err, result) => {
                 if (err) throw err;
-                list = result.body.hits.hits;
-                res.render('result',{page:page,img:img,list:list,team:team});
+                let list = result.body.hits;
+                let count = list.total.value;
+                res.render('result',{list:list.hits,count:count,search:search});
             })
         }
         else {
             client.search({
-                index: img,
+                index: 'camera',
                 body: {
                     query : {
-                        range : {
-                            Date : {
-                                gte : fromDate,
-                                lte : toDate
-                            }
-                        }
+                        range :searchPrice
                     },
-                    sort : [
-                        {
-                            Date : {
-                                order : 'asc'
-                            }
-                        }
-                    ]
-                },
-                size: 50
-            },(err,result)=>{
+                    sort : sortby                    
+                }
+            }, (err, result) => {
                 if (err) throw err;
-                list = result['body']['hits']['hits'];
-                res.render('result',{page:page,img:img,list:list,fromdate:fromdate,todate:todate})
+                let list = result.body.hits;
+                let count = list.total.value;
+                res.render('result',{list:list.hits,count:count,search:search});
             })
         }
     }
     else{
-        res.render('search',{page:page,img:img});
-    }
-});
-
-app.post('/statistic',urlencodedParser,(req,res)=>{
-    let page = req.body.page;
-    let team = req.body.team;
-    let img = req.body.img;
-    if (team == 'All'){
-        client.search({
-            index: img,
-            body: {
-                query : {
-                    match_all :{}
-                },
-                size: 0,
-                aggs: {
-                    home_goal : {
-                        stats : {
-                            field: 'FTHG'
-                        }
-                    }
-                }
-            }
-        },(err,result)=>{
-            if (err) throw err;
-            var home = result.body.aggregations.home_goal;
-            client.search({
-                index: img,
-                body: {
-                    query : {
-                        match_all :{}
-                    },
-                    size: 0,
-                    aggs: {
-                        away_goal : {
-                            stats : {
-                                field: 'FTAG'
-                            }
-                        }
-                    }
-                }
-            },(err,result)=>{
-                if(err) throw err;
-                var away = result.body.aggregations.away_goal;
-                res.render('statistic',{page:page,team:team,home:home,away:away,img:img})
-            })
-        })
-    }
-    else{
-        client.search({
-            index: img,
-            body: {
-                query : {
-                    match :{
-                        HomeTeam : team
-                    }
-                },
-                size: 0,
-                aggs: {
-                    home_goal : {
-                        stats : {
-                            field: 'FTHG'
-                        }
-                    }
-                }
-            }
-        },(err,result)=>{
-            if (err) throw err;
-            var home = result.body.aggregations.home_goal;
-            client.search({
-                index: img,
-                body: {
-                    query : {
-                        match :{
-                            AwayTeam : team
-                        }
-                    },
-                    size: 0,
-                    aggs: {
-                        away_goal : {
-                            stats : {
-                                field: 'FTAG'
-                            }
-                        }
-                    }
-                }
-            },(err,result)=>{
-                if(err) throw err;
-                var away = result.body.aggregations.away_goal;
-                res.render('statistic',{page:page,team:team,home:home,away:away,img:img})
-            })
-        })
+        res.render('/');
     }
     
 })
@@ -287,8 +169,3 @@ app.listen(port,()=>{
 });
 
 
-
-function dateConvert(date){
-    d =  date.substr(2,2) + date.substr(5,2) + date.substr(8,2);
-    return parseInt(d);
-}
