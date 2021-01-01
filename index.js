@@ -15,7 +15,6 @@ app.use(express.static(path.join(__dirname, './public/')));
 
 // // connect elastic search
 const { Client } = require('@elastic/elasticsearch');
-const { match } = require('assert');
 
 const client = new Client({
   node: 'http://localhost:9200',
@@ -37,8 +36,10 @@ app.get('/index',(req,res)=>{
 app.post('/search',urlencodedParser,(req,res)=>{
     let search = req.body.search;
     let sort = req.body.sort;
-    let fromprice = req.body.fromprice;
+    let fromprice = req.body.fromprice
     let toprice = req.body.toprice;
+    
+    
     let searchWord = {
         bool : {
             should : [
@@ -162,7 +163,7 @@ app.post('/search',urlencodedParser,(req,res)=>{
         }
     }
     else{
-        res.render('/');
+        res.redirect('/');
     }
     
 })
