@@ -41,34 +41,9 @@ app.post('/search',urlencodedParser,(req,res)=>{
     
     
     let searchWord = {
-        bool : {
-            should : [
-                {
-                    match : {
-                        name : search
-                    }
-                },
-                {
-                    match : {
-                        brand: search
-                    }
-                },
-                {
-                    match : {
-                        description : search
-                    }
-                },
-                {
-                    match : {
-                        type : search
-                    }
-                },
-                {
-                    match : {
-                        categories : search 
-                    }
-                }
-            ]
+        multi_match : {
+            query: search,
+            fields: ["_all"]
         }
     }
 

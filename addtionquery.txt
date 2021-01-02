@@ -1,0 +1,53 @@
+GET /_cat/indices?pretty
+
+PUT /product?pretty
+
+GET /camera/_doc/2501
+
+PUT /camera/_bulk
+{"index":{"_id":2501}}
+{"name" : "Macbook M1","description" : "This is macbook M1","price" : 1499,"brand" : "Apple","categories" :["Computer","Macbook","Apple"],"type" : "macbook","price_range" : "1000-1500","popularity" : 8888}
+
+GET /camera/_search?q=camera
+
+GET /camera/_search?q=name:macbook pro
+
+GET /camera/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Dell",
+      "fields": ["name","description"]
+    }
+  }
+}
+
+GET /camera/_search
+{
+    "query" : {
+        "range" : {
+            "price" : {
+                "gte" :
+                "lte" :
+            }
+        }
+    }
+}
+
+GET /camera/_search
+{
+    "query" :{
+        "match_all" : {}
+    },
+    "size": 0,
+    "aggs": {
+        "price": {
+            "stats": {
+                "field" : "price"
+            }
+        }
+    }
+}
+
+GET /camera/_mapping
+
